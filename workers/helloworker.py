@@ -1,4 +1,11 @@
+"""
+HelloWorker — minimal example
+
+Logs a message every 5 seconds. No equipment needed.
+"""
+import time
 from netcrawl import WorkerClass
+
 
 class HelloWorker(WorkerClass):
     class_name = "Hello"
@@ -9,5 +16,4 @@ class HelloWorker(WorkerClass):
 
     def on_loop(self):
         self.info("I am alive!")
-        import time; time.sleep(5)
-        raise
+        time.sleep(5)
