@@ -2,6 +2,8 @@
 
 Starter workspace for **NetCrawl** — a programmable idle game where you write Python workers to automate a network.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Starscribers/netcrawl-workspace?quickstart=1)
+
 ## Quick Start
 
 ```bash
@@ -9,13 +11,25 @@ Starter workspace for **NetCrawl** — a programmable idle game where you write 
 git clone https://github.com/Starscribers/netcrawl-workspace.git workspace
 cd workspace
 
-# 2. Install dependencies (installs netcrawl-sdk from PyPI)
+# 2. Install dependencies (installs the pinned SDK and test tools from PyPI)
 uv sync
 
 # 3. Edit main.py — set the correct server URL (check the Connect button in-game)
 # 4. Start the code server
 uv run main.py
 ```
+
+## GitHub Codespaces
+
+Use the badge above to create a Codespace directly from this repository. The container installs `uv`, syncs the pinned SDK, and makes the **NetCrawl: Start Code Server** task available in VS Code.
+
+After the Codespace is ready:
+
+1. Open `main.py` and paste the server URL and API key shown by NetCrawl's **Connect** dialog.
+2. Run `uv run main.py` in the terminal (or run the VS Code task).
+3. If setup fails, run `uv sync --frozen` in the repository root. If that still fails, rebuild the container from the Command Palette with **Codespaces: Rebuild Container**; do not run from a partially installed environment.
+
+The game server must be reachable from the Codespace. `localhost` refers to the Codespace itself, so a game running only on your own computer needs a publicly reachable development URL or the local clone workflow above.
 
 ## Structure
 
@@ -51,12 +65,12 @@ class MyMiner(WorkerClass):
         self.pickaxe.mine_and_collect() # mine + pick up
 
         # Filter bad data
-        if self.holding and self.holding.type == "bad_data":
-            self.discard()
-            return
+        if any(item.type == "bad_data" for item in self.holding):
+            self.discard("bad_data")
 
         self.move(self.edge)            # mine → hub
-        self.deposit()
+        if self.holding:
+            self.deposit()
 ```
 
 Then register it in `main.py`:
@@ -73,11 +87,11 @@ app.register(MyMiner)
 | `self.move(target)` | Move along Edge, Route, edge ID, or node ID |
 | `self.collect()` | Pick up drop → `CollectResult` |
 | `self.deposit()` | Deposit at Hub → `DepositResult` |
-| `self.discard()` | Throw away held item |
+| `self.discard(type)` | Throw away held items of a type |
 | `self.scan()` | Scan adjacent nodes → `List[ScannedNode]` |
 | `self.repair(node_id)` | Repair infected node |
 | `self.info(msg)` | Log message (visible in UI) |
-| `self.holding` | Currently held item (`Drop` with `.type`, `.amount`) |
+| `self.holding` | Currently held items (`list[Drop]`) |
 
 ## License
 

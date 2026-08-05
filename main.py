@@ -1,11 +1,11 @@
 """
-NetCrawl Worker Codebase — Entry Point
-=======================================
-Copy this folder to workspace/ (gitignored) and start editing.
+NetCrawl Workspace — Entry Point
+================================
+Clone this repository and start editing.
 
 Usage:
-    pip install ../packages/sdk-python   # install the SDK
-    python main.py                       # start the code server
+    uv sync
+    uv run main.py
 
 The code server will:
   1. Register all worker classes with the game server
