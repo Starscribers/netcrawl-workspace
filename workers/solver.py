@@ -95,4 +95,5 @@ class Solver(WorkerClass):
             return ordered[len(ordered) // 2]
         if op == "unique_count": return len(set(numbers))
         if op == "gcd": return math.gcd(a, b)
+        if op == "typeof": return type(params.get("value")).__name__
         return None

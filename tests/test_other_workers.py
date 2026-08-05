@@ -113,6 +113,20 @@ class WorkerExampleSmokeTest(unittest.TestCase):
         self.assertIn("redeploy", errors[0].lower())
         self.assertEqual(sleep.call_count, 2)
 
+    def test_solver_handles_live_typeof_puzzle_values(self):
+        cases = (
+            (42, "int"),
+            (3.14, "float"),
+            ("hello", "str"),
+            (True, "bool"),
+            ([1, 2, 3], "list"),
+            ({"a": 1}, "dict"),
+        )
+        worker = IdleWorker()
+        for value, expected in cases:
+            with self.subTest(value=value):
+                self.assertEqual(Solver.solve(worker, {"op": "typeof", "value": value}), expected)
+
 
 if __name__ == "__main__":
     unittest.main()
