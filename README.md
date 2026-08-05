@@ -26,7 +26,10 @@ workspace/
 │   ├── helloworker.py   # Minimal example (no equipment)
 │   ├── miner.py         # Mining worker (Pickaxe + Edge)
 │   ├── guardian.py      # Patrol & repair worker (Shield + Sensor)
-│   └── scout.py         # Exploration worker (Route + Sensor)
+│   ├── scout.py         # Exploration worker (Route + Sensor)
+│   ├── handler.py       # API request handler
+│   └── solver.py        # Compute puzzle solver
+├── .vscode/tasks.json   # Start code server task
 └── pyproject.toml       # Python dependencies
 ```
 
