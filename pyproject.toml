@@ -5,5 +5,5 @@ description = "Starter workspace for NetCrawl — write Python workers to automa
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "netcrawl-sdk==1.2.1",
+    "netcrawl-sdk==1.2.2",
 ]

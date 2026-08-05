@@ -18,6 +18,7 @@ class Solver(WorkerClass):
 
     def on_loop(self):
         if self.route_suspended:
+            time.sleep(5)
             return
 
         if not self.route:
@@ -32,6 +33,7 @@ class Solver(WorkerClass):
                 f"{route_nodes!r}; solver suspended. Return it to the route or redeploy it."
             )
             self.route_suspended = True
+            time.sleep(5)
             return
 
         current_index = route_nodes.index(self.current_node)

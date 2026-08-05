@@ -91,7 +91,7 @@ class WorkerExampleSmokeTest(unittest.TestCase):
                 self.assertEqual(worker.solves, 1)
 
     @patch("workers.solver.time.sleep")
-    def test_solver_suspends_with_one_error_when_current_node_is_off_route(self, _sleep):
+    def test_solver_suspends_with_one_error_when_current_node_is_off_route(self, sleep):
         worker = IdleWorker()
         worker.route = RuntimeRoute(
             ["e1"],
@@ -111,6 +111,7 @@ class WorkerExampleSmokeTest(unittest.TestCase):
         self.assertEqual(len(errors), 1)
         self.assertIn("other-relay", errors[0])
         self.assertIn("redeploy", errors[0].lower())
+        self.assertEqual(sleep.call_count, 2)
 
 
 if __name__ == "__main__":
