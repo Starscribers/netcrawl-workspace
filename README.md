@@ -2,7 +2,7 @@
 
 Starter workspace for **NetCrawl** — a programmable idle game where you write Python workers to automate a network.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Starscribers/netcrawl-workspace?quickstart=1)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Starscribers/netcrawl-workspace/tree/main?quickstart=1)
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ uv run main.py
 
 ## GitHub Codespaces
 
-Use the badge above to create a Codespace directly from this repository. The container installs `uv`, syncs the pinned SDK, and makes the **NetCrawl: Start Code Server** task available in VS Code.
+Use the badge above to create or resume a Codespace directly from this repository's `main` branch. The repository's default devcontainer starts with Python 3.12, installs the Python extension and `uv`, creates the pinned `.venv`, selects `.venv/bin/python` as the interpreter, and makes the **NetCrawl: Start Code Server** task available in VS Code.
 
 After the Codespace is ready:
 
