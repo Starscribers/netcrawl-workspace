@@ -23,11 +23,10 @@ class Miner(WorkerClass):
         self.pickaxe.mine_and_collect() # mine + pick up
 
         # Filter bad data
-        if self.holding and self.holding.type == "bad_data":
-            self.discard()
+        if any(item.type == "bad_data" for item in self.holding):
+            self.discard("bad_data")
             self.info("Discarded bad data")
-            self.move(self.edge)        # mine → hub; reset route state for next loop
-            return
 
         self.move(self.edge)            # mine → hub
-        self.deposit()
+        if self.holding:
+            self.deposit()
