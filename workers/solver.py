@@ -13,22 +13,20 @@ class Solver(WorkerClass):
 
     def on_startup(self):
         self.solves = 0
-        self.edge_id = self.route if isinstance(self.route, str) else None
-        self.info(f"Solver online! Edge: {self.edge_id}")
+        self.info(f"Solver online! Route: {self.route}")
 
     def on_loop(self):
-        if not self.edge_id:
-            self.error("No edge configured")
+        if not self.route:
+            self.error("No route configured")
             time.sleep(5)
             return
 
         if self._current_node == "hub":
-            self.move_edge(self.edge_id)
+            self.move(self.route)
 
         node = self.get_current_node()
         if not isinstance(node, ComputeNode):
             self.warn(f"Not a compute node: {node.type}")
-            self.move_edge(self.edge_id)
             time.sleep(3)
             return
 
@@ -52,7 +50,7 @@ class Solver(WorkerClass):
             self.info(f"Correct! +{reward.get('amount', 0)} {reward.get('type', '')} (#{self.solves})")
         else:
             self.warn(f"Wrong! Expected {result.get('expected')}, got {answer}")
-        self.move_edge(self.edge_id)
+        self.move(list(reversed(self.route)))
 
     def solve(self, params: dict):
         op = params.get("op", "")
