@@ -40,7 +40,7 @@ class WorkerExampleSmokeTest(unittest.TestCase):
         Handler.on_loop(worker)
 
     @patch("workers.solver.time.sleep")
-    def test_solver_traverses_injected_route_and_submits(self, _sleep):
+    def test_solver_recovers_from_each_route_position(self, _sleep):
         class ComputeNodeStub:
             def get_task(self):
                 return type("Task", (), {"parameters": {"op": "add", "a": 2, "b": 3}, "task_id": "t1"})()
@@ -49,33 +49,68 @@ class WorkerExampleSmokeTest(unittest.TestCase):
                 self.submission = (task_id, answer)
                 return {"correct": True, "reward": {"amount": 1, "type": "rp"}}
 
+        route = RuntimeRoute(
+            ["e1", "e2", "e3"],
+            [
+                {"id": "e1", "source": "hub", "target": "relay-1"},
+                {"id": "e2", "source": "relay-1", "target": "relay-2"},
+                {"id": "e3", "source": "relay-2", "target": "compute"},
+            ],
+        )
+
+        for start, forward_edges in (
+            ("hub", ["e1", "e2", "e3"]),
+            ("relay-1", ["e2", "e3"]),
+            ("relay-2", ["e3"]),
+            ("compute", []),
+        ):
+            with self.subTest(start=start):
+                worker = IdleWorker()
+                worker.route = route
+                worker.current_node = start
+                worker.moves = []
+                worker.warn = worker.info
+                worker.error = worker.info
+                node = ComputeNodeStub()
+
+                def move(edge):
+                    worker.moves.append(str(edge))
+                    worker.current_node = edge.target if worker.current_node == edge.source else edge.source
+
+                worker.move = move
+                worker.get_current_node = lambda: node
+                worker.solve = lambda params: Solver.solve(worker, params)
+
+                with patch("workers.solver.ComputeNode", ComputeNodeStub):
+                    Solver.on_startup(worker)
+                    Solver.on_loop(worker)
+
+                self.assertEqual(worker.moves, forward_edges + ["e3", "e2", "e1"])
+                self.assertEqual(worker.current_node, "hub")
+                self.assertEqual(node.submission, ("t1", 5))
+                self.assertEqual(worker.solves, 1)
+
+    @patch("workers.solver.time.sleep")
+    def test_solver_suspends_with_one_error_when_current_node_is_off_route(self, _sleep):
         worker = IdleWorker()
         worker.route = RuntimeRoute(
-            ["e1", "e2"],
-            [{"id": "e1", "source": "hub", "target": "relay"}, {"id": "e2", "source": "relay", "target": "compute"}],
+            ["e1"],
+            [{"id": "e1", "source": "hub", "target": "compute"}],
         )
-        worker._current_node = "hub"
-        worker.moves = []
+        worker.current_node = "other-relay"
         worker.warn = worker.info
         worker.error = worker.info
-        node = ComputeNodeStub()
+        worker.move = lambda _edge: self.fail("off-route worker must not guess a move")
+        worker.get_current_node = lambda: self.fail("off-route worker must not request a task")
 
-        def move(target):
-            worker.moves.append(target)
-            worker._current_node = "compute" if len(worker.moves) == 1 else "hub"
+        Solver.on_startup(worker)
+        Solver.on_loop(worker)
+        Solver.on_loop(worker)
 
-        worker.move = move
-        worker.get_current_node = lambda: node
-        worker.solve = lambda params: Solver.solve(worker, params)
-
-        with patch("workers.solver.ComputeNode", ComputeNodeStub):
-            Solver.on_startup(worker)
-            Solver.on_loop(worker)
-
-        self.assertIs(worker.moves[0], worker.route)
-        self.assertEqual([str(edge) for edge in worker.moves[1]], ["e2", "e1"])
-        self.assertEqual(node.submission, ("t1", 5))
-        self.assertEqual(worker.solves, 1)
+        errors = [message for message in worker.messages if "not on configured route" in message]
+        self.assertEqual(len(errors), 1)
+        self.assertIn("other-relay", errors[0])
+        self.assertIn("redeploy", errors[0].lower())
 
 
 if __name__ == "__main__":

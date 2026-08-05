@@ -13,16 +13,30 @@ class Solver(WorkerClass):
 
     def on_startup(self):
         self.solves = 0
+        self.route_suspended = False
         self.info(f"Solver online! Route: {self.route}")
 
     def on_loop(self):
+        if self.route_suspended:
+            return
+
         if not self.route:
             self.error("No route configured")
             time.sleep(5)
             return
 
-        if self._current_node == "hub":
-            self.move(self.route)
+        route_nodes = self.route.nodes
+        if self.current_node not in route_nodes:
+            self.error(
+                f"Current node {self.current_node!r} is not on configured route "
+                f"{route_nodes!r}; solver suspended. Return it to the route or redeploy it."
+            )
+            self.route_suspended = True
+            return
+
+        current_index = route_nodes.index(self.current_node)
+        for edge in self.route.edges[current_index:]:
+            self.move(edge)
 
         node = self.get_current_node()
         if not isinstance(node, ComputeNode):
@@ -50,7 +64,8 @@ class Solver(WorkerClass):
             self.info(f"Correct! +{reward.get('amount', 0)} {reward.get('type', '')} (#{self.solves})")
         else:
             self.warn(f"Wrong! Expected {result.get('expected')}, got {answer}")
-        self.move(list(reversed(self.route)))
+        for edge in reversed(self.route):
+            self.move(edge)
 
     def solve(self, params: dict):
         op = params.get("op", "")
