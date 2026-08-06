@@ -21,12 +21,12 @@ uv run main.py
 
 ## GitHub Codespaces
 
-Use the badge above to create or resume a Codespace directly from this repository's `main` branch. The repository's default devcontainer starts with Python 3.12, installs the Python extension and `uv`, creates the pinned `.venv`, selects `.venv/bin/python` as the interpreter, and makes the **NetCrawl: Start Code Server** task available in VS Code.
+Use the badge above to create or resume a Codespace directly from this repository's `main` branch. The repository's default devcontainer starts with Python 3.12, installs the Python extension and `uv`, creates the pinned `.venv`, selects `.venv/bin/python` as the interpreter, and configures **NetCrawl: Start Code Server** in VS Code.
 
 After the Codespace is ready:
 
 1. Open `main.py` and paste the server URL and API key shown by NetCrawl's **Connect** dialog.
-2. Run `uv run main.py` in the terminal (or run the VS Code task).
+2. Open **Run and Debug** and click the green play button (or press F5). You can also run `uv run main.py` in the terminal.
 3. If setup fails, run `uv sync --frozen` in the repository root. If that still fails, rebuild the container from the Command Palette with **Codespaces: Rebuild Container**; do not run from a partially installed environment.
 
 The game server must be reachable from the Codespace. `localhost` refers to the Codespace itself, so a game running only on your own computer needs a publicly reachable development URL or the local clone workflow above.
@@ -44,6 +44,7 @@ workspace/
 │   ├── handler.py       # API request handler
 │   └── solver.py        # Compute puzzle solver
 ├── .vscode/tasks.json   # Start code server task
+├── .vscode/launch.json  # One-click Run and Debug configuration
 └── pyproject.toml       # Python dependencies
 ```
 
