@@ -8,8 +8,8 @@ from netcrawl import WorkerClass
 
 
 class HelloWorker(WorkerClass):
-    class_name = "Hello"
-    class_id = "hello"
+    class_name = "HelloWorker"
+    class_id = "helloworker"
 
     def on_startup(self):
         self.info("Hello, World!")
