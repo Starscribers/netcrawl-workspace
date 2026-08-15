@@ -8,6 +8,7 @@ from netcrawl import WorkerClass, Route, ComputeNode
 class Solver(WorkerClass):
     class_name = "Solver"
     class_id = "solver"
+    capabilities = ["compute_automation"]
 
     route = Route("Path to compute node")
 

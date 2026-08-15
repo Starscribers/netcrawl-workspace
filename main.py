@@ -34,6 +34,9 @@ app.register(HelloWorker)
 # 新增你的 worker class 就在這裡 register 就好
 # from workers.my_custom_worker import MyWorker
 # app.register(MyWorker)
+# To automate a Compute node after solving it once in Compute Lab:
+# from workers.solver import Solver
+# app.register(Solver)
 
 if __name__ == "__main__":
     app.run()
