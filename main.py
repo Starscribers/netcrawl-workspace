@@ -12,6 +12,8 @@ The code server will:
   2. Open a persistent channel to receive deploy commands
   3. Fork subprocesses when you deploy workers from the UI
 """
+import os
+
 from netcrawl import NetCrawl
 
 from workers.miner import Miner
@@ -22,7 +24,7 @@ from workers.helloworker import HelloWorker
 
 app = NetCrawl(
     api_key="sk-local",             # local 版隨便填，cloud 版換成你的 API key
-    server="http://localhost:4800",  # game server 位置
+    server=os.getenv("NETCRAWL_SERVER", "http://localhost:4800"),  # game server 位置
 )
 
 app.register(Miner)
