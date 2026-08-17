@@ -10,7 +10,14 @@ dependencies = [
     # running an SDK the server no longer spoke. The server enforces the lower
     # bound too, so a runtime below it is refused with one actionable sentence
     # instead of silently misreading commands.
-    "netcrawl-sdk>=1.4.1,<2",
+    #
+    # The bound is also the frame shape, not just the protocol. R-50: 1.4.1
+    # never emitted `detail["loop"]` or `frame["types"]`, so the Compute Lab
+    # drew no loop track and no type chips while every version check passed.
+    # 1.4.2 is the first release that emits them, and netcrawl2's
+    # MIN_PYTHON_SDK_VERSION is checked against this range — a starter that
+    # admits less than the server requires is a red build there.
+    "netcrawl-sdk>=1.4.2,<2",
 ]
 
 [dependency-groups]
