@@ -5,7 +5,12 @@ description = "Starter workspace for NetCrawl — write Python workers to automa
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "netcrawl-sdk==1.2.8",
+    # A range, not an exact pin. An "==" pin cannot pick up a protocol fix
+    # without an edit to this repo, which is how a starter Codespace ended up
+    # running an SDK the server no longer spoke. The server enforces the lower
+    # bound too, so a runtime below it is refused with one actionable sentence
+    # instead of silently misreading commands.
+    "netcrawl-sdk>=1.4.1,<2",
 ]
 
 [dependency-groups]
