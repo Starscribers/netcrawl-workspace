@@ -13,9 +13,11 @@ The code server will:
   3. Fork subprocesses when you deploy workers from the UI
 """
 import os
+from pathlib import Path
 
 from netcrawl import NetCrawl
 
+from scripts.bootstrap_compute_starters import ensure_compute_starters
 from workers.miner import Miner
 from workers.guardian import Guardian
 from workers.scout import Scout
@@ -26,6 +28,10 @@ app = NetCrawl(
     api_key="sk-local",             # local 版隨便填，cloud 版換成你的 API key
     server=os.getenv("NETCRAWL_SERVER", "http://localhost:4800"),  # game server 位置
 )
+
+# Safe on every start: a workspace refresh repairs only absent Compute Lab
+# starters and deliberately leaves player-authored files byte-for-byte intact.
+ensure_compute_starters(Path(__file__).resolve().parent)
 
 app.register(Miner)
 app.register(Guardian)

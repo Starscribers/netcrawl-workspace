@@ -14,10 +14,30 @@ cd workspace
 # 2. Install dependencies (installs the pinned SDK and test tools from PyPI)
 uv sync
 
-# 3. Edit main.py — set the correct server URL (check the Connect button in-game)
+# 3. Ensure any newly added Compute Lab starter files exist (safe to rerun)
+uv run python scripts/bootstrap_compute_starters.py
+
+# 4. Edit main.py — set the correct server URL (check the Connect button in-game)
 # 4. Start the code server
 uv run main.py
 ```
+
+## Compute Lab: local-first files
+
+Each known compute node has an empty, deterministic starter class in
+`problems/<node-id>.py`. For example, the ADD node is
+`problems/e_op_add.py`. Open the exact path shown in Compute Lab, implement
+`ProblemSolver`, and check that the file runs locally:
+
+```bash
+uv run python problems/e_op_add.py
+```
+
+Starting the workspace also repairs missing starters. You can run `uv run python
+scripts/bootstrap_compute_starters.py` directly after refreshing if you need to
+repair them before starting. Both paths create only missing starters and never
+change a file that you have edited. This local check does not yet send a result
+back to the game or open an editor automatically.
 
 ## GitHub Codespaces
 
