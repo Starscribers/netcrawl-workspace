@@ -19,7 +19,7 @@ dependencies = [
     # It retains the loop/type frame contract introduced in 1.4.2. netcrawl2's
     # MIN_PYTHON_SDK_VERSION is checked against this range — a starter that
     # admits less than the server requires is a red build there.
-    "netcrawl-sdk>=1.4.5,<2",
+    "netcrawl-sdk>=1.4.6,<2",
 ]
 
 [dependency-groups]

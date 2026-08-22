@@ -31,14 +31,14 @@ wheels = [
 
 [[package]]
 name = "netcrawl-sdk"
-version = "1.4.5"
+version = "1.4.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/c8/53c8e6da51de4e5758ef5f35926d4fdb9a775368d00802702a7bbd624bfc/netcrawl_sdk-1.4.5.tar.gz", hash = "sha256:891e106f78c2a1f3b955a6005b485c7d69ada60aea727a9b125ff19bdf083bae", size = 65818, upload-time = "2026-08-22T05:11:34.192Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/34/a3ce753cc8305345e689c08cdb8f9f32e26106d4729db7b66842d7fc923a/netcrawl_sdk-1.4.6.tar.gz", hash = "sha256:5e3852f17a52133bbeb2a35ba7cfc3cc9258e3768742622e6dabb0f833c4e208", size = 66387, upload-time = "2026-08-22T05:45:47Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/6e/263151ffce4fba9087c438f809ede032c89f85b5c67a772f5766eb99f747/netcrawl_sdk-1.4.5-py3-none-any.whl", hash = "sha256:bd5e0fa8d51a6460a7010f0b3b453c6220e53da8e01d9e1d95e75b93471635d7", size = 52211, upload-time = "2026-08-22T05:11:33.066Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/87/4fc8e11eb1f33684c5a16c08050efefb281a0861bae7a61059cf378271fe/netcrawl_sdk-1.4.6-py3-none-any.whl", hash = "sha256:fbdc9f22f1a59a85cba7c1c2bd821544bf725df23f765257907b627f0241be04", size = 52503, upload-time = "2026-08-22T05:45:45.949Z" },
 ]
 
 [[package]]
@@ -55,7 +55,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "netcrawl-sdk", specifier = ">=1.4.5,<2" }]
+requires-dist = [{ name = "netcrawl-sdk", specifier = ">=1.4.6,<2" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=8.0,<9" }]
