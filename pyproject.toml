@@ -3,7 +3,7 @@ name = "netcrawl-workspace"
 version = "0.1.0"
 description = "Starter workspace for NetCrawl — write Python workers to automate your network."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     # A range, not an exact pin. An "==" pin cannot pick up a protocol fix
     # without an edit to this repo, which is how a starter Codespace ended up
@@ -14,10 +14,12 @@ dependencies = [
     # The bound is also the frame shape, not just the protocol. R-50: 1.4.1
     # never emitted `detail["loop"]` or `frame["types"]`, so the Compute Lab
     # drew no loop track and no type chips while every version check passed.
-    # 1.4.2 is the first release that emits them, and netcrawl2's
+    # 1.4.5 is the first release that also emits semantic Name-load spans,
+    # allowing assignment visualization to distinguish `a = b` from `a = "b"`.
+    # It retains the loop/type frame contract introduced in 1.4.2. netcrawl2's
     # MIN_PYTHON_SDK_VERSION is checked against this range — a starter that
     # admits less than the server requires is a red build there.
-    "netcrawl-sdk>=1.4.2,<2",
+    "netcrawl-sdk>=1.4.5,<2",
 ]
 
 [dependency-groups]
